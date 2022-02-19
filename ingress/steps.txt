@@ -1,0 +1,24 @@
+- Use this to setup ingress controller: https://platform9.com/blog/building-a-complete-stack-ingress-controllers/
+
+- Replace the meta annd specs section of the ingress file as follows:
+metadata:
+  name: helloworld-rules
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+
+- The address for the ingress object might be local host or something different depending on the tool you used to provision it.  got local host
+curl -H 'Host: helloworld-v1.example.com' http://127.0.0.1
+curl -H 'Host: helloworld-v2.example.com' http://127.0.0.1
+
+Set this config for defaults routes in the ingress file
+http:
+  paths:
+  - path: /
+    pathType: Prefix
+    backend:
+        service:
+          name: echoheaders-default
+          port:
+            number: 80
