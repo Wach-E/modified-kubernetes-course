@@ -9,6 +9,7 @@ spec:
   ingressClassName: nginx
 
 - The address for the ingress object might be local host or something different depending on the tool you used to provision it.  got local host
+curl http://127.0.0.1 # Should give echoheaders-default response
 curl -H 'Host: helloworld-v1.example.com' http://127.0.0.1
 curl -H 'Host: helloworld-v2.example.com' http://127.0.0.1
 
