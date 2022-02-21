@@ -12,6 +12,9 @@ spec:
       labels:
         app: wordpress
     spec:
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
       containers:
       - name: wordpress
         image: wordpress:4-php7.0
@@ -70,9 +73,9 @@ spec:
             value: wordpress-db
         volumeMounts:
         - mountPath: /var/www/html/wp-content/uploads
-          name: uploads
+          name: mypvc
       volumes:
-      - name: uploads
-        nfs:
-          server: eu-west-1a.fs-5714e89e.efs.eu-west-1.amazonaws.com
-          path: /
+      - name: mypvc
+        persistentVolumeClaim:
+          claimName: fileserver-claim
+          
