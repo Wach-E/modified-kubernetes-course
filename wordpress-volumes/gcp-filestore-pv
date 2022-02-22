@@ -4,9 +4,9 @@ metadata:
   name: fileserver
 spec:
   capacity:
-    storage: 50G
+    storage: 100G
   accessModes:
   - ReadWriteMany
   nfs:
     path: /uploads
-    server: 10.210.161.2
+    server: 10.58.83.178
