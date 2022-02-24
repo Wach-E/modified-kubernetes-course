@@ -12,11 +12,14 @@ spec:
       labels:
         app: wordpress
     spec:
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
       containers:
       - name: wordpress
         image: wordpress:4-php7.0
         # uncomment to fix perm issue, see also https://github.com/kubernetes/kubernetes/issues/2630
-        # command: ['bash', '-c', 'mkdir -p /var/www/html/wp-content/uploads; chown www-data:www-data /var/www/html/wp-content/uploads && docker-entrypoint.sh apache2-foreground']
+        command: ['bash', '-c', 'mkdir -p /var/www/html/wp-content/uploads; chown www-data:www-data /var/www/html/wp-content/uploads && docker-entrypoint.sh apache2-foreground']
         ports:
         - name: http-port
           containerPort: 80
@@ -70,9 +73,9 @@ spec:
             value: wordpress-db
         volumeMounts:
         - mountPath: /var/www/html/wp-content/uploads
-          name: uploads
+          name: nfspvc
       volumes:
-      - name: uploads
-        nfs:
-          server: eu-west-1a.fs-5714e89e.efs.eu-west-1.amazonaws.com
-          path: /
+      - name: nfspvc
+        persistentVolumeClaim:
+          claimName: fileserver-claim
+          

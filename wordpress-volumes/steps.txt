@@ -1,0 +1,59 @@
+## SETUP CLUSTER
+# Setup kubernetes cluster with kops: 
+- https://www.iamobinna.com/posts/how-to-create-a-kubernetes-cluster-on-google-cloud-using-kops/
+
+#Just incase Kops gives an error with authorization, run: 
+- kops export kubecfg --admin
+
+## SETUP WORDPRESS DATABASE
+# Create storageClass and PVC for database using GCP: 
+- https://devopscube.com/persistent-volume-google-kubernetes-engine/
+
+# Create database pod with PVC for GCP
+kubectl apply -f wordpress-db.yml
+
+# Create service to expose database pod with PVC for GCP
+kubectl apply -f wordpress-db-service.yml
+
+##Part 1 Creation Completion##
+* Create storage class
+* Create PVC
+* Create Secrets
+* Create wordpress-db
+* Create wordpress-db-service
+
+## SETUP WORDPRESS MEDIA NFS
+# Create filestore for media uploads
+- Enable file.googleapis.com API for filestore
+gcloud services enable file.googleapis.com
+
+# Create and describe filestore: https://cloud.google.com/filestore/docs/create-instance-gcloud#linux
+- Create a filestore
+gcloud beta filestore instances create nfs-server --zone=us-central1-a --tier=BASIC_HDD --file-share=name="uploads",capacity=1TB --network=name="hey-kubernetes"
+
+- Describe filestore
+gcloud filestore instances describe nfs-server --zone=us-central1-a
+
+- Setup worker nodes as NFS clients
+sudo apt update
+sudo apt install nfs-common
+
+- Confirm reachability of Filestore
+sudo showmount -e <filestore-ip>
+sudo rpcinfo -p <filestore-ip>
+
+
+# Accessinng file shares: 
+https://cloud.google.com/filestore/docs/accessing-fileshares
+- Create a PV 
+- Create PVC
+- Consume PVC in deployment
+
+##Part 2 Creation Completion##
+* Create PV for NFS
+* Create PVC for NFS PV
+* Create wordpress-web
+* Create wordpress-web service
+
+Confirm reachability of wordpress as well as file upload
+
