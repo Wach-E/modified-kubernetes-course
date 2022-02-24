@@ -1,0 +1,14 @@
+# Install Helm
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh 
+
+# Metrics-server
+helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+helm upgrade --install metrics-server metrics-server/metrics-server
+
+# Debug metrics server
+- Modify and add "- --kubelet-insecure-tls" in deployment.spec.template.spec.containers.args
+- kubectl apply -f components.yaml
+- kubectl top nodes
+ # Reference: https://www.scmgalaxy.com/tutorials/kubernetes-metrics-server-error-readiness-probe-failed-http-probe-failed-with-statuscode/
