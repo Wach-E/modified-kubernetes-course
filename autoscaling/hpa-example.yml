@@ -28,8 +28,8 @@ metadata:
   name: hpa-example
 spec:
   ports:
-  - port: 31001
-    nodePort: 31001
+  - port: 31002
+    nodePort: 31002
     targetPort: http-port
     protocol: TCP
   selector:
